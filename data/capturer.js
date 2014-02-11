@@ -5,7 +5,7 @@ $('*').click(function(){
         var text = this.text;
         var str = "Href:" + link + "  text:" + text;
         node = [link,text]; 
-        console.log(node);
+        //console.log(node);
         self.port.emit("captured", node);
     }
 });
