@@ -1,10 +1,9 @@
 $('*').click(function(){
-    var link = this.href;
-    //TODO somehow on one click many events are generated with 'undefined' links. to filter them:
-    if(link!=undefined){
-        var text = this.text;
-        var str = "Href:" + link + "  text:" + text;
-        node = [link,text]; 
+    var url = this.href;
+    if(url!=undefined){
+        var urlText = this.text;
+        //var str = "Href:" + url + "  text:" + urlText;
+        node = [url,urlText]; 
         //console.log(node);
         self.port.emit("captured", node);
     }
