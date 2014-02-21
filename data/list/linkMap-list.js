@@ -10,7 +10,7 @@ the add-on code, so it can open the link in the main browser.
 */
 
 self.on('message', function onMessage(storedLinkMap) {
-  console.log("in content script \n");
+  //console.log("in content script \n");
   var linkMapList = $('#linkMap-list');
   linkMapList.empty();
   storedLinkMap.forEach(
@@ -34,6 +34,7 @@ textArea.onkeyup = function(event){
     if(event.keyCode == 13){
         self.postMessage(textArea.value);
         textArea.value='';
+        
     }
 };
 
@@ -46,30 +47,35 @@ self.on('message',function(){
 */
 
 self.port.on('print', function(aActivity){
-    console.log("generate json \n" );
-    //generate_json(aActivity);
+    console.log(aActivity);
+    var data="text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(aActivity));
+    $('<a href="data:'+data+'"download="data.json">download json</a>').appendTo('#download');
+    /*
+    var dwnldHtml  = $('#download').clone();
+    dwnldHtml.find('.json_dwn').attr('href', aActivity);
+    dwnldHtml.find('.json_dwn').bind('click', function(event){
+        event.stopPropagation();
+        //event.preventDefault();
+    });
+    */
 });
 
 /* will generate json from activity object */
 /*
 function generate_json(data){
-    var json = {};  // creates a json object 
-    json.push({
-        [
+    var jsonArr = {};  // creates a json object 
+    jsonArr.push({
         domain: data.domain,
-        acitivity name: data.label,
-        map: [
+        acitivity_name: data.label,
     });
     for(var i = 0;i<data.map.length; i++)
     {
-        json.push({
-            [
+        jsonArr.push({
               url: data.map[i].url,
               text: data.map[i].urlText
-            ]
         });
     }
-    json.push({]]});
-    console.log(json);
+    //json.push({]]});
+    console.log(jsonArr);
 }
 */
