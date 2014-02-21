@@ -23,9 +23,7 @@ self.on('message', function onMessage(storedLinkMap) {
         event.preventDefault();
         self.postMessage(storedAnnotation.url);
       });
-      //annotationHtml.find('.selection-text').text(storedAnnotation.anchorText);
-      //annotationHtml.find('.annotation-text').text(storedAnnotation.annotationText);
-      linkMapList.append(annotationHtml);
+     linkMapList.append(annotationHtml);
     });
 });
 
@@ -48,16 +46,9 @@ self.on('message',function(){
 
 self.port.on('print', function(aActivity){
     console.log(aActivity);
+    /* answer from :http://stackoverflow.com/a/20343999/769407 */
     var data="text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(aActivity));
     $('<a href="data:'+data+'"download="data.json">download json</a>').appendTo('#download');
-    /*
-    var dwnldHtml  = $('#download').clone();
-    dwnldHtml.find('.json_dwn').attr('href', aActivity);
-    dwnldHtml.find('.json_dwn').bind('click', function(event){
-        event.stopPropagation();
-        //event.preventDefault();
-    });
-    */
 });
 
 /* will generate json from activity object */
