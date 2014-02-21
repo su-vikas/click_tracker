@@ -9,7 +9,8 @@ Bind a function to click events on the link that send a message back to
 the add-on code, so it can open the link in the main browser.
 */
 
-self.on("message", function onMessage(storedLinkMap) {
+self.on('message', function onMessage(storedLinkMap) {
+  console.log("in content script \n");
   var linkMapList = $('#linkMap-list');
   linkMapList.empty();
   storedLinkMap.forEach(
@@ -22,10 +23,53 @@ self.on("message", function onMessage(storedLinkMap) {
         event.preventDefault();
         self.postMessage(storedAnnotation.url);
       });
-      annotationHtml.find('.selection-text')
-                    .text(storedAnnotation.anchorText);
-      annotationHtml.find('.annotation-text')
-                    .text(storedAnnotation.annotationText);
+      //annotationHtml.find('.selection-text').text(storedAnnotation.anchorText);
+      //annotationHtml.find('.annotation-text').text(storedAnnotation.annotationText);
       linkMapList.append(annotationHtml);
     });
 });
+
+var textArea = document.getElementById('activityName');
+textArea.onkeyup = function(event){
+    if(event.keyCode == 13){
+        self.postMessage(textArea.value);
+        textArea.value='';
+    }
+};
+
+/*
+self.on('message',function(){
+    var textArea = document.getElementById('activityName');
+    textArea.value='';
+    textArea.focus();
+});
+*/
+
+self.port.on('print', function(aActivity){
+    console.log("generate json \n" );
+    //generate_json(aActivity);
+});
+
+/* will generate json from activity object */
+/*
+function generate_json(data){
+    var json = {};  // creates a json object 
+    json.push({
+        [
+        domain: data.domain,
+        acitivity name: data.label,
+        map: [
+    });
+    for(var i = 0;i<data.map.length; i++)
+    {
+        json.push({
+            [
+              url: data.map[i].url,
+              text: data.map[i].urlText
+            ]
+        });
+    }
+    json.push({]]});
+    console.log(json);
+}
+*/
