@@ -1,2 +1,3 @@
--> links should be from same domain
+TOD0
+--> the plugin should work tab-specific
 -> 
