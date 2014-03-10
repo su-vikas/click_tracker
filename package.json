@@ -1,9 +1,9 @@
 {
-  "name": "activity_har_plugin",
-  "title": "activity_har_plugin",
+  "name": "linkmap",
+  "title": "linkmap",
   "id": "jid1-WLwz9fYQOhPBXA",
-  "description": "a basic add-on",
-  "author": "",
+  "description": "The plugin helps in maintaining a map of links visited on a website",
+  "author": "Vikas Gupta <vikasgupta.nit@gmail.com>",
   "license": "MPL 2.0",
   "version": "0.1"
 }
