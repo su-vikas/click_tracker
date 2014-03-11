@@ -9,3 +9,4 @@ $('*').click(function(){
         self.port.emit("captured", node);
     }
 });
+
