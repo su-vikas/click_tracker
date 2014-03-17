@@ -9,29 +9,47 @@
  */
 //TODO deal when a new page is loaded 
 self.port.on('highlightLinks', function(activity){
-//get list of all links on the page
-    console.log("in highlight links");
-    console.log(activity);
+    
+    // check whether the present tab's hostname matches to the hostname in the activity file uploaded
+    var currentPageURL = document.URL;
+    if(getHostname(currentPageURL) != activity.hostname) 
+    {
+        alert(" The activity file is not for this domain!. Exiting" );
+        return;
+    }
 
     // get all links on the page
     var linksOnPage = document.getElementsByTagName('a');
     highlightLinks(activity, linksOnPage);
-   // colorLinks(linksOnPage);
+    // colorLinks(linksOnPage);
 });
 
 //TODO check the present url. move to that point in the linkMap and then highlight
 // takes the activity object and array of links on the page and highlights 
+/*
+ * MATCHING color scheme
+ * RED: if hostname+pathname+ url text all match
+ * ORANGE: if only text matches 
+ */ 
 function highlightLinks(activity, linksOnPage){
-    console.log("yhaan hoon mai");
     var linkMap = activity.map;
     for(var i=0; i<linkMap.length; i++)
     {
         for(var j=0;j<linksOnPage.length; j++)
         {
-            if(linkMap[i].urlText == linksOnPage[j].text)
+            var hostPathname1 = getHostnamePathname(linkMap[i].url);
+            var hostPathname2 = getHostnamePathname(linksOnPage[j].href);
+
+            /* hostname, pathname and url text both matched */
+            if(linkMap[i].urlText == linksOnPage[j].text && hostPathname1 == hostPathname2)
             {
-                //console.log("activity: " + linkMap[i].urlText + "dynamic: " + linksOnPage[j].text);
                 linksOnPage[j].style.color = 'red' ;
+            }
+
+            /* only url text matched */
+            else if(linkMap[i].urlText == linksOnPage[j].text)
+            {
+                linksOnPage[j].style.color = 'orange';
             }
         }
     }
@@ -44,3 +62,27 @@ function colorLinks(linksArray){
         linksArray[i].style.color='red';
     }
 }
+
+//takes the complete url and returns the hostname+path
+function getHostnamePathname(link){
+    var hostname = getHostname(link);
+    var pathname= getPathname(link);
+    return (hostname+pathname);
+}
+
+/* returns the hostname of a url */
+function getHostname(link){
+    var url = document.createElement('a'); 
+    url.href = link;
+    var hostname = url.hostname;
+    return hostname;
+}
+
+/* returns the pathname of a url */
+function getPathname(link){
+    var url = document.createElement('a'); 
+    url.href = link;
+    var pathname = url.pathname;
+    return pathname;
+}
+
