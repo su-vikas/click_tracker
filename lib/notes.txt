@@ -5,3 +5,10 @@ TOD0
 --> if not above one, then handle multiple file import else.
 --> use various boundary case handling, like check whether the file uploaded is json, it is adhering to the format. 
 --> show the map dynamically in a side panel. 
+
+
+URL MATCHING ISSUES:
+-->> traversing the linkmap, highlighting links on each page traversal. At present only the page open is handled without looking at which level of the map we are present. 
+-->> How to handle cases when url remains same but url parameters keep changing. One way to handle is to match url text.  
+-->> case of ajax 
+-->>  
