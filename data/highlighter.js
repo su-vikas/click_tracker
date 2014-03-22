@@ -8,7 +8,7 @@
 /* gets the message and the links in form of activity object from add-on 
  */
 //TODO deal when a new page is loaded 
-self.port.on('highlightLinks', function(activity){
+self.port.on('highlightAllLinks', function(activity){
     
     // check whether the present tab's hostname matches to the hostname in the activity file uploaded
     var currentPageURL = document.URL;
@@ -20,28 +20,63 @@ self.port.on('highlightLinks', function(activity){
 
     // get all links on the page
     var linksOnPage = document.getElementsByTagName('a');
-    highlightLinks(activity, linksOnPage);
-    // colorLinks(linksOnPage);
+    highlightActivity(activity, linksOnPage);
+
+    // colorLinks(linksOnPage); //for testing purpose 
+});
+
+self.port.on('highlightLink', function(link){
+    var linksOnPage = document.getElementsByTagName('a');
+    highlightLinks(link, linksOnPage);
 });
 
 //TODO check the present url. move to that point in the linkMap and then highlight
 // takes the activity object and array of links on the page and highlights 
+
 /*
  * MATCHING color scheme
- * RED: if hostname+pathname+ url text all match
+ * RED: if pathname+ url text all match (hostname is checked in the starting)
  * ORANGE: if only text matches 
  */ 
-function highlightLinks(activity, linksOnPage){
+var index = []; //to keep indexes matched
+function highlightActivity(activity, linksOnPage){
     var linkMap = activity.map;
     for(var i=0; i<linkMap.length; i++)
     {
         for(var j=0;j<linksOnPage.length; j++)
         {
-            var hostPathname1 = getHostnamePathname(linkMap[i].url);
-            var hostPathname2 = getHostnamePathname(linksOnPage[j].href);
+            var pathname1 = getPathname(linkMap[i].url);
+            var pathname2 = getPathname(linksOnPage[j].href);
 
             /* hostname, pathname and url text both matched */
-            if(linkMap[i].urlText == linksOnPage[j].text && hostPathname1 == hostPathname2)
+            if(linkMap[i].urlText == linksOnPage[j].text && pathname1 == pathname2)
+            {
+                linksOnPage[j].style.color = 'red' ;
+                index.push(i);
+            }
+
+            /* only url text matched */
+            else if(linkMap[i].urlText == linksOnPage[j].text)
+            {
+                linksOnPage[j].style.color = 'orange';
+            }
+
+        }
+    }
+    self.port.emit('matchIndex', index);
+}
+
+function highlightLinks(linkMap, linksOnPage)
+{
+    for(var i=0; i<linkMap.length; i++)
+    {
+        for(var j=0;j<linksOnPage.length; j++)
+        {
+            var pathname1 = getPathname(linkMap[i].url);
+            var pathname2 = getPathname(linksOnPage[j].href);
+
+            /* hostname, pathname and url text both matched */
+            if(linkMap[i].urlText == linksOnPage[j].text && pathname1 == pathname2)
             {
                 linksOnPage[j].style.color = 'red' ;
             }
@@ -51,6 +86,7 @@ function highlightLinks(activity, linksOnPage){
             {
                 linksOnPage[j].style.color = 'orange';
             }
+
         }
     }
 }
