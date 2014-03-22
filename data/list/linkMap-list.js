@@ -35,37 +35,19 @@ textArea.onkeyup = function(event){
     }
 };
 
-/*
-self.on('message',function(){
-    var textArea = document.getElementById('activityName');
-    textArea.value='';
-    textArea.focus();
-});
-*/
-
 self.port.on('print', function(aActivity){
-    console.log(aActivity);
+    var hostname;
     /* answer from :http://stackoverflow.com/a/20343999/769407 */
+    if(aActivity.map.length > 0)
+    {
+        // to extract the hostname using javascript API. Not creating own regex
+        var url = document.createElement('a');
+        url.href = aActivity.map[0].url; 
+        hostname = url.hostname;
+        aActivity.hostname = hostname;
+    }
+    console.log(aActivity);
     var data="text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(aActivity));
     $('<a href="data:'+data+'"download="data.json">download json</a>').appendTo('#download');
 });
 
-/* will generate json from activity object */
-/*
-function generate_json(data){
-    var jsonArr = {};  // creates a json object 
-    jsonArr.push({
-        domain: data.domain,
-        acitivity_name: data.label,
-    });
-    for(var i = 0;i<data.map.length; i++)
-    {
-        jsonArr.push({
-              url: data.map[i].url,
-              text: data.map[i].urlText
-        });
-    }
-    //json.push({]]});
-    console.log(jsonArr);
-}
-*/
