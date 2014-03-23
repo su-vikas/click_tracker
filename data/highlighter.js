@@ -9,7 +9,6 @@
  */
 //TODO deal when a new page is loaded 
 self.port.on('highlightAllLinks', function(activity){
-    
     // check whether the present tab's hostname matches to the hostname in the activity file uploaded
     var currentPageURL = document.URL;
     if(getHostname(currentPageURL) != activity.hostname) 
@@ -28,6 +27,7 @@ self.port.on('highlightAllLinks', function(activity){
 self.port.on('highlightLink', function(link){
     var linksOnPage = document.getElementsByTagName('a');
     highlightLinks(link, linksOnPage);
+    detectLinkClick();
 });
 
 //TODO check the present url. move to that point in the linkMap and then highlight
@@ -38,6 +38,21 @@ self.port.on('highlightLink', function(link){
  * RED: if pathname+ url text all match (hostname is checked in the starting)
  * ORANGE: if only text matches 
  */ 
+
+function detectLinkClick(){
+    //var linksOnPage = document.links;
+    var linksOnPage = document.getElementsByTagName('a');
+    for(var j=0;j<linksOnPage.length; j++)
+    {
+        linksOnPage[j].addEventListener('click', function(event){
+            //linksOnPage[j].onclick = function(){
+            var link = [];
+            link.push(this.href);
+            link.push(this.text);
+            self.port.emit('linkClicked',link);
+        });
+    }
+}
 var index = []; //to keep indexes matched
 function highlightActivity(activity, linksOnPage){
     var linkMap = activity.map;
