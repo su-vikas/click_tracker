@@ -25,6 +25,7 @@ self.port.on('highlightAllLinks', function(activity){
 });
 
 self.port.on('highlightLink', function(link){
+    console.log("IDHAR HAIN");
     var linksOnPage = document.getElementsByTagName('a');
     highlightLinks(link, linksOnPage);
     detectLinkClick();
@@ -49,6 +50,7 @@ function detectLinkClick(){
             var link = [];
             link.push(this.href);
             link.push(this.text);
+            console.log(link);
             self.port.emit('linkClicked',link);
         });
     }
