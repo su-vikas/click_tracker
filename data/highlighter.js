@@ -5,9 +5,7 @@
  * 2. match the url text after partial matching url. TEST IT OUT. 
  */
 
-/* gets the message and the links in form of activity object from add-on 
- */
-//TODO deal when a new page is loaded 
+/* gets the message and the links in form of activity object from add-on */
 self.port.on('highlightAllLinks', function(activity){
     // check whether the present tab's hostname matches to the hostname in the activity file uploaded
     var currentPageURL = document.URL;
@@ -25,14 +23,10 @@ self.port.on('highlightAllLinks', function(activity){
 });
 
 self.port.on('highlightLink', function(link){
-    console.log("IDHAR HAIN");
     var linksOnPage = document.getElementsByTagName('a');
     highlightLinks(link, linksOnPage);
     detectLinkClick();
 });
-
-//TODO check the present url. move to that point in the linkMap and then highlight
-// takes the activity object and array of links on the page and highlights 
 
 /*
  * MATCHING color scheme
@@ -41,7 +35,6 @@ self.port.on('highlightLink', function(link){
  */ 
 
 function detectLinkClick(){
-    //var linksOnPage = document.links;
     var linksOnPage = document.getElementsByTagName('a');
     for(var j=0;j<linksOnPage.length; j++)
     {

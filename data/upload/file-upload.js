@@ -17,6 +17,7 @@ function handleFileSelect(evt){
     }
     //send the captured activity object back to the main code. 
     /*to make async file reading a bit synchronous :D */
+    /* http://stackoverflow.com/questions/14226803/javascript-wait-5-seconds-before-executing-next-line */
     setTimeout(function(){
         self.port.emit('fileUploaded',activity);
     }, 1000);
